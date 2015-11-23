@@ -14,6 +14,11 @@ SPEED_DELAY = 0.1
 STEP_SIZE = 20 		#Needs to be the same as sprite size
 BG_COLOR = (0,0,0)
 
+UP = "U"
+DOWN = "D"
+LEFT = "L"
+RIGHT = "R"
+
 pygame.init()
 game_screen = pygame.display.set_mode((AREA.x, AREA.y))
 continue_game = True
@@ -43,13 +48,13 @@ def isExitGameEvent(event):
 	return event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE)
 
 def moveSprite(sprite):
-	if sprite.direction == "U":
+	if sprite.direction == UP:
 		sprite.rect.top -= STEP_SIZE
-	elif sprite.direction == "D":
+	elif sprite.direction == DOWN:
 		sprite.rect.top += STEP_SIZE
-	elif sprite.direction == "L":
+	elif sprite.direction == LEFT:
 		sprite.rect.left -= STEP_SIZE
-	elif sprite.direction == "R":
+	elif sprite.direction == RIGHT:
 		sprite.rect.left += STEP_SIZE
 
 	if sprite.rect.left < 0:
@@ -68,13 +73,13 @@ def handleEvents():
 			return False
 		elif event.type == pygame.KEYDOWN:
 			if event.key == pygame.K_UP:
-				snake_head.direction = "U"
+				snake_head.direction = UP
 			if event.key == pygame.K_DOWN:
-				snake_head.direction = "D"
+				snake_head.direction = DOWN
 			if event.key == pygame.K_LEFT:
-				snake_head.direction = "L"
+				snake_head.direction = LEFT
 			if event.key == pygame.K_RIGHT:
-				snake_head.direction = "R"
+				snake_head.direction = RIGHT
 			if event.key == pygame.K_p:
 				print "P Pressed"
 		elif event.type == pygame.KEYUP:
@@ -128,7 +133,7 @@ def drawSnake():
 	for tailSeg in snake_head.tail:
 		pygame.draw.circle(game_screen, (10,200,10), (tailSeg.x+halfStep,tailSeg.y+halfStep), STEP_SIZE/3, 2)	
 
-snake_head.direction = "D"
+snake_head.direction = DOWN
 while continue_game:
 	time.sleep(SPEED_DELAY)
 	continue_game = handleEvents()
@@ -142,5 +147,6 @@ while continue_game:
 
 	pygame.display.update()
 
+print "Score: {}".format(len(snake_head.tail)-1)
 pygame.quit()
 
