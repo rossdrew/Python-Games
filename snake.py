@@ -133,9 +133,10 @@ def drawSnake():
 	for tailSeg in snake_head.tail:
 		pygame.draw.circle(game_screen, (10,200,10), (tailSeg.x+halfStep,tailSeg.y+halfStep), STEP_SIZE/3, 2)	
 
+
 snake_head.direction = DOWN
 while continue_game:
-	time.sleep(SPEED_DELAY)
+	time.sleep(SPEED_DELAY - (0.0005 * len(snake_head.tail)))
 	continue_game = handleEvents()
 	continue_game = updateSnake()
 
