@@ -117,7 +117,6 @@ while continue_game:
 		pygame.draw.circle(game_screen, (10,200,10), (tailSeg.x,tailSeg.y), STEP_SIZE/3, 2)	
 
 	createApples()
-#	pygame.draw.circle(game_screen, (200,10,20), (100,130), 10, 10)
 	apple_group.draw(game_screen)
 
 	pygame.display.update()
