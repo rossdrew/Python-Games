@@ -97,29 +97,39 @@ def eatAvailiableApples(eater):
 	else:
 		return False
 
+def snakeIsTangled(snake):
+	y = snake.rect.top
+	x = snake.rect.left
+	for tailSeg in snake.tail:
+		if y == tailSeg.y and x == tailSeg.x:
+			return True
+	return False
+
 def updateSnake():
-	snake_head.tail.append(GridPoint(snake_head.rect.left+halfStep, snake_head.rect.top+halfStep))
+	"""Update snake and tail positions, return False if snake is tangled"""
+	snake_head.tail.append(GridPoint(snake_head.rect.left, snake_head.rect.top))
+	moveSprite(snake_head)
 	if eatAvailiableApples(snake_head):
 		clearApples()
 		#dont clip tail which -in effect- grows the tail by one
-	elif len(snake_head.tail) > 0:
+	elif snakeIsTangled(snake_head):
+		return False
+	else:
 		snake_head.tail.pop(0)
 
-	moveSprite(snake_head)
+	return True
 
 def drawSnake():
+	halfStep = STEP_SIZE/2
 	snake_group.draw(game_screen)
 	for tailSeg in snake_head.tail:
-		pygame.draw.circle(game_screen, (10,200,10), (tailSeg.x,tailSeg.y), STEP_SIZE/3, 2)	
+		pygame.draw.circle(game_screen, (10,200,10), (tailSeg.x+halfStep,tailSeg.y+halfStep), STEP_SIZE/3, 2)	
 
-
-snake_head.direction = ""
-halfStep = STEP_SIZE/2
+snake_head.direction = "D"
 while continue_game:
 	time.sleep(SPEED_DELAY)
 	continue_game = handleEvents()
-
-	updateSnake()
+	continue_game = updateSnake()
 
 	game_screen.fill(BG_COLOR)
 	drawSnake()
