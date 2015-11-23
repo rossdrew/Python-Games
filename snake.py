@@ -97,24 +97,32 @@ def eatAvailiableApples(eater):
 	else:
 		return False
 
+def updateSnake():
+	snake_head.tail.append(GridPoint(snake_head.rect.left+halfStep, snake_head.rect.top+halfStep))
+	if eatAvailiableApples(snake_head):
+		clearApples()
+		#dont clip tail which -in effect- grows the tail by one
+	elif len(snake_head.tail) > 0:
+		snake_head.tail.pop(0)
+
+	moveSprite(snake_head)
+
+def drawSnake():
+	snake_group.draw(game_screen)
+	for tailSeg in snake_head.tail:
+		pygame.draw.circle(game_screen, (10,200,10), (tailSeg.x,tailSeg.y), STEP_SIZE/3, 2)	
+
+
 snake_head.direction = ""
 halfStep = STEP_SIZE/2
 while continue_game:
 	time.sleep(SPEED_DELAY)
 	continue_game = handleEvents()
 
-	snake_head.tail.append(GridPoint(snake_head.rect.left+halfStep, snake_head.rect.top+halfStep))
-	if eatAvailiableApples(snake_head):
-		clearApples()
-	elif len(snake_head.tail) > 0:
-		snake_head.tail.pop(0)
+	updateSnake()
 
 	game_screen.fill(BG_COLOR)
-	moveSprite(snake_head)
-	snake_group.draw(game_screen)
-
-	for tailSeg in snake_head.tail:
-		pygame.draw.circle(game_screen, (10,200,10), (tailSeg.x,tailSeg.y), STEP_SIZE/3, 2)	
+	drawSnake()
 
 	createApples()
 	apple_group.draw(game_screen)
