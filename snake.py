@@ -27,7 +27,7 @@ snake_group = pygame.sprite.GroupSingle(snake_head)
 
 apple = pygame.sprite.Sprite()
 apple.live = False
-apple.image = pygame.image.load("apple.gif") ##TODO get a snake image
+apple.image = pygame.image.load("apple.gif") 
 apple.rect = apple.image.get_rect()
 apple_group = pygame.sprite.GroupSingle(apple)
 
