@@ -9,14 +9,13 @@ class GridPoint:
 		self.x = x
 		self.y = y
 
-AREA_WIDTH = 640
-AREA_HEIGHT = 480
+AREA = GridPoint(640,480)
 SPEED_DELAY = 0.1
 STEP_SIZE = 20 		#Needs to be the same as sprite size
 BG_COLOR = (0,0,0)
 
 pygame.init()
-game_screen = pygame.display.set_mode((AREA_WIDTH, AREA_HEIGHT))
+game_screen = pygame.display.set_mode((AREA.x, AREA.y))
 continue_game = True
 
 snake_head = pygame.sprite.Sprite()
@@ -33,6 +32,10 @@ apple_group = pygame.sprite.GroupSingle(apple)
 
 if snake_head.rect.width != apple.rect.width and snake_head.rect.height != apple.rect.height:
 	print "ERROR: Sprites are not a common size"
+elif snake_head.rect.width != snake_head.rect.height:
+	print "ERROR: Snake sprite is not square"
+elif apple.rect.width != apple.rect.height:
+	print "ERROR: Apple sprite is not square"
 else:
 	STEP_SIZE = snake_head.rect.width
 
@@ -53,10 +56,10 @@ def moveSprite(sprite):
 		sprite.rect.left = 0
 	if sprite.rect.top < 0:
 		sprite.rect.top = 0
-	if sprite.rect.bottom > AREA_HEIGHT:
-		sprite.rect.bottom = AREA_HEIGHT
-	if sprite.rect.right > AREA_WIDTH:
-		sprite.rect.right = AREA_WIDTH
+	if sprite.rect.bottom > AREA.y:
+		sprite.rect.bottom = AREA.y
+	if sprite.rect.right > AREA.x:
+		sprite.rect.right = AREA.x
 
 def handleEvents():
 	"""Handle any events and return False if the game should end, True otherwise"""
@@ -81,9 +84,9 @@ def handleEvents():
 def createApples():
 	"""If there are no apples, places one at a random location"""
 	if not apple.live:
-		apple.rect.top = randint(0, AREA_HEIGHT - STEP_SIZE) 
+		apple.rect.top = randint(0, AREA.y - STEP_SIZE) 
 		apple.rect.top -= apple.rect.top % STEP_SIZE
-		apple.rect.left = randint(0, AREA_WIDTH - STEP_SIZE) 
+		apple.rect.left = randint(0, AREA.x - STEP_SIZE) 
 		apple.rect.left -= apple.rect.left % STEP_SIZE
 		apple.live = True
 
