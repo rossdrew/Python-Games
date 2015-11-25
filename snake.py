@@ -87,6 +87,12 @@ def handleEvents():
 			pass
 	return True
 
+def waitForKeyPress():
+	while True:
+		for event in pygame.event.get():
+			if event.type == pygame.KEYDOWN:
+				return
+
 def createApples():
 	"""If there are no apples, places one at a random location"""
 	if not apple.live:
@@ -143,10 +149,11 @@ def printText(game_screen, text, yLoc, size):
 
 def printEndOfGameSummary(game_screen, score):
 	game_screen.fill(BG_COLOR)
+	time.sleep(.5)
 	printText(game_screen, "Game Over", 150, 35)
 	printText(game_screen, "Score: {}".format(score), 200, 30)
 	pygame.display.update()
-	time.sleep(2)
+	waitForKeyPress()
 
 snake_head.direction = DOWN
 while continue_game:
