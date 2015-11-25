@@ -35,6 +35,7 @@ apple.image = pygame.image.load("apple.gif")
 apple.rect = apple.image.get_rect()
 apple_group = pygame.sprite.GroupSingle(apple)
 
+#TODO make sure game screen is divisable by the STEP_SIZE
 if snake_head.rect.width != apple.rect.width and snake_head.rect.height != apple.rect.height:
 	print "ERROR: Sprites are not a common size"
 elif snake_head.rect.width != snake_head.rect.height:
@@ -133,6 +134,19 @@ def drawSnake():
 	for tailSeg in snake_head.tail:
 		pygame.draw.circle(game_screen, (10,200,10), (tailSeg.x+halfStep,tailSeg.y+halfStep), STEP_SIZE/3, 2)	
 
+def printText(game_screen, text, yLoc, size):
+	gameFont = pygame.font.Font(None, size)
+	label = gameFont.render(text, 1, (255,255,255))
+	lblHeight = label.get_rect().bottom - label.get_rect().top
+	lblWidth = label.get_rect().right - label.get_rect().left
+	game_screen.blit(label, (AREA.x/2 - lblWidth/2, yLoc)) #Centered
+
+def printEndOfGameSummary(game_screen, score):
+	game_screen.fill(BG_COLOR)
+	printText(game_screen, "Game Over", 150, 35)
+	printText(game_screen, "Score: {}".format(score), 200, 30)
+	pygame.display.update()
+	time.sleep(2)
 
 snake_head.direction = DOWN
 while continue_game:
@@ -149,5 +163,8 @@ while continue_game:
 	pygame.display.update()
 
 print "Score: {}".format(len(snake_head.tail)-1)
+
+printEndOfGameSummary(game_screen, len(snake_head.tail)-1)
+
 pygame.quit()
 
