@@ -140,28 +140,32 @@ def drawSnake():
 	for tailSeg in snake_head.tail:
 		pygame.draw.circle(game_screen, (10,200,10), (tailSeg.x+halfStep,tailSeg.y+halfStep), STEP_SIZE/3, 2)	
 
-def printText(game_screen, text, yLoc, size):
+def printText(game_screen, text, yLoc, size, color = (255,255,255)):
 	gameFont = pygame.font.Font(None, size)
-	label = gameFont.render(text, 1, (255,255,255))
+	label = gameFont.render(text, 1, color)
 	lblHeight = label.get_rect().bottom - label.get_rect().top
 	lblWidth = label.get_rect().right - label.get_rect().left
 	game_screen.blit(label, (AREA.x/2 - lblWidth/2, yLoc)) #Centered
 
 def printEndOfGameSummary(game_screen, score):
 	game_screen.fill(BG_COLOR)
-	time.sleep(.5)
+	time.sleep(1)
 	printText(game_screen, "Game Over", 150, 35)
 	printText(game_screen, "Score: {}".format(score), 200, 30)
 	pygame.display.update()
 	waitForKeyPress()
+	waitForKeyPress()
 
 snake_head.direction = DOWN
+game_speed_mofifier = SPEED_DELAY
 while continue_game:
-	time.sleep(SPEED_DELAY - (0.0005 * len(snake_head.tail)))
+	game_speed_mofifier = SPEED_DELAY - (0.0005 * len(snake_head.tail))
+	time.sleep(game_speed_mofifier)
 	continue_game = handleEvents()
 	continue_game = updateSnake()
 
 	game_screen.fill(BG_COLOR)
+	printText(game_screen, "{}, {}".format(len(snake_head.tail), game_speed_mofifier), 10, 30, (100,100,100))
 	drawSnake()
 
 	createApples()
